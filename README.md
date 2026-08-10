@@ -1,4 +1,4 @@
-# wallv
+# wault
 
 A fast, keyboard-first Windows wallpaper switcher inspired by the interaction model of Raycast.
 
