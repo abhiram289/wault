@@ -4,16 +4,10 @@ A fast, keyboard-first Windows wallpaper switcher inspired by the interaction mo
 
 ## What changed
 
-- **Raycast-style command palette UI** — compact centered launcher, instant search, keyboard-first selection, preview pane, subtle dark glass styling.
-- **Global hotkey actually opens the launcher from anywhere** — the old desktop-focus gate has been removed. `Alt+W` (or whatever is in `config.json`) works while another application is focused.
-- **More reliable Windows hotkey registration** — uses `MOD_NOREPEAT`, reports Windows registration errors, and unregisters cleanly on exit.
-- **Foreground handling** — briefly uses a topmost window position so Windows is less likely to refuse focus after a global-hotkey activation.
-- **Async thumbnail loading + disk cache** — the UI stays responsive while a large wallpaper folder is scanned.
-- **Better keyboard UX** — type to filter, `↑/↓` to move, `Enter` to apply, `Esc` to close.
-- **Current wallpaper awareness** — the current wallpaper is marked in the result list.
-- **Multi-monitor transition retained** — wallpaper cross-fade continues to happen behind the desktop.
-- **Cleaner tray controls** — open, reload, change folder, quit.
-- **No bundled virtual environment** — the source archive is much smaller and reproducible.
+**Raycast inspired UI** - clean & compact centered launcher, instant search, keyboard-first selection, preview pane.
+**Global hotkey** - `Alt+W` (or whatever is in `config.json`) works only on the desktop with no other apps focused.
+**Keyboard UX** - type to filter, `↑/↓` to move, `Enter` to apply, `Esc` to close.
+**Clean tray controls** - open, reload, change folder, quit.
 
 ## Install
 
@@ -37,8 +31,6 @@ For a background launch, use:
 run_wallv.bat
 ```
 
-For debugging, run `python main.py` from a terminal so Windows/PySide errors remain visible.
-
 ## Hotkey
 
 The shipped configuration keeps:
@@ -54,4 +46,4 @@ If Windows says the shortcut cannot be registered, another program already owns 
 
 ## Important
 
-This is a Windows app. The global hotkey and desktop transition use Win32 APIs, so those parts are intentionally Windows-specific.
+This is Windows specific. The global hotkey and desktop transition use Win32 APIs, so those parts are intentionally Windows-specific.
