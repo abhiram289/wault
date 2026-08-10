@@ -1,5 +1,20 @@
+# Python
 .venv/
-.thumbnails/
 __pycache__/
 *.pyc
+*.pyo
+
+# User config (has personal wallpaper folder path)
 config.json
+
+# Thumbnail cache
+.thumbnails/
+
+# Dev/scratch files
+scratch/
+run_wallv_debug.bat
+test_hotkey.py
+figma_design.png
+
+# Sample wallpapers (user-specific)
+wallpapers/
