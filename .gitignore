@@ -1,0 +1,5 @@
+.venv/
+.thumbnails/
+__pycache__/
+*.pyc
+config.json
