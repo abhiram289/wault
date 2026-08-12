@@ -1,57 +1,88 @@
 # wallv
 
-A fast, keyboard-first Windows wallpaper switcher inspired by the interaction model of Raycast.
+A fast, keyboard-first Windows wallpaper switcher — inspired by Raycast.
 
-## What changed
+Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. Fuzzy search, grid/list view, live preview, and smooth transitions. Sits silently in the system tray and starts automatically at boot.
 
-- **Raycast-style command palette UI** — compact centered launcher, instant search, keyboard-first selection, preview pane, subtle dark glass styling.
-- **Global hotkey actually opens the launcher from anywhere** — the old desktop-focus gate has been removed. `Alt+W` (or whatever is in `config.json`) works while another application is focused.
-- **More reliable Windows hotkey registration** — uses `MOD_NOREPEAT`, reports Windows registration errors, and unregisters cleanly on exit.
-- **Foreground handling** — briefly uses a topmost window position so Windows is less likely to refuse focus after a global-hotkey activation.
-- **Async thumbnail loading + disk cache** — the UI stays responsive while a large wallpaper folder is scanned.
-- **Better keyboard UX** — type to filter, `↑/↓` to move, `Enter` to apply, `Esc` to close.
-- **Current wallpaper awareness** — the current wallpaper is marked in the result list.
-- **Multi-monitor transition retained** — wallpaper cross-fade continues to happen behind the desktop.
-- **Cleaner tray controls** — open, reload, change folder, quit.
-- **No bundled virtual environment** — the source archive is much smaller and reproducible.
+---
 
 ## Install
 
-Open PowerShell in this folder:
+> **Requirements**: Windows 10/11, Python 3.11+
 
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
+1. Clone the repo:
+   ```
+   git clone https://github.com/abhiram289/wallv-raycast-edition.git
+   cd wallv-raycast-edition
+   ```
 
-Then run:
+2. Run the installer:
+   ```
+   install.bat
+   ```
 
-```powershell
-python main.py
-```
+That's it. wallv will launch in your system tray and register itself to auto-start on boot.
 
-For a background launch, use:
+---
 
-```text
-run_wallv.bat
-```
+## Usage
 
-For debugging, run `python main.py` from a terminal so Windows/PySide errors remain visible.
+| Action | How |
+|---|---|
+| Open picker | `Alt+W` |
+| Search wallpapers | Just start typing |
+| Navigate | `↑` / `↓` arrow keys |
+| Apply wallpaper | `Enter` |
+| Switch to Grid / List view | Click the toggle button |
+| Close picker | `Esc` |
+| Change wallpaper folder | Right-click tray icon → *Change Folder* |
+| Quit | Right-click tray icon → *Quit wallv* |
 
-## Hotkey
+---
 
-The shipped configuration keeps:
+## Configuration
+
+A `config.json` is auto-created on first run. You can edit it to change the hotkey or wallpaper folder:
 
 ```json
-"hotkey_modifiers": ["alt"],
-"hotkey_key": "w"
+{
+    "wallpaper_dir": "C:/Users/You/Pictures/Wallpapers",
+    "hotkey_modifiers": ["alt"],
+    "hotkey_key": "w"
+}
 ```
 
-So the global launcher shortcut is **Alt+W**.
+If the hotkey conflicts with another app, change `hotkey_key` to something else (e.g. `"space"`, `"f9"`) and restart wallv.
 
-If Windows says the shortcut cannot be registered, another program already owns it. Change the values in `config.json`, restart wallv, and check the console output.
+---
 
-## Important
+## Features
 
-This is a Windows app. The global hotkey and desktop transition use Win32 APIs, so those parts are intentionally Windows-specific.
+- **Raycast-style UI** — compact floating launcher, dark glass design
+- **Fuzzy search** — instantly filters your wallpaper library
+- **Grid & List views** — toggle between views with a button
+- **Live preview pane** — see the wallpaper before applying
+- **Smooth crossfade transition** — animated wallpaper change
+- **Global hotkey** — works while any app is focused
+- **System tray daemon** — always running, zero taskbar clutter
+- **Auto-start at boot** — registered to Windows Startup on first launch
+- **High-DPI aware** — crisp rendering on all display scales
+
+---
+
+## Requirements
+
+- Windows 10 / 11
+- Python 3.11+
+- Dependencies (auto-installed by `install.bat`):
+  - `PySide6` — UI framework
+  - `Pillow` — image processing
+  - `pywin32` — Win32 API (hotkeys, wallpaper, system tray)
+
+---
+
+## Notes
+
+- This is a **Windows-only** app. The hotkey and wallpaper APIs use Win32.
+- wallv will not run if another instance is already open (single-instance lock).
+- To uninstall: quit from the tray, delete the folder, and remove `wallv.lnk` from `shell:startup`.
