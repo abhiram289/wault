@@ -12,8 +12,8 @@ Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. F
 
 1. Clone the repo:
    ```
-   git clone https://github.com/abhiram289/wallv-raycast-edition.git
-   cd wallv-raycast-edition
+   git clone https://github.com/abhiram289/wault.git
+   cd wault
    ```
 
 2. Run the installer:
