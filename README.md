@@ -22,7 +22,6 @@ Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. F
 
 That's it. wault will launch in your system tray and register itself to auto-start on boot.
 
----
 
 ## Usage
 
@@ -37,7 +36,6 @@ That's it. wault will launch in your system tray and register itself to auto-sta
 | Change wallpaper folder | Right-click tray icon → *Change Folder* |
 | Quit | Right-click tray icon → *Quit wault* |
 
----
 
 ## Configuration
 
@@ -67,9 +65,10 @@ If the hotkey conflicts with another app, change `hotkey_key` to something else 
 - Windows 10 / 11
 - Python 3.11+
 - Dependencies (auto-installed by `install.bat`):
-  - `PySide6` — UI framework
-  - `Pillow` — image processing
-  - `pywin32` — Win32 API (hotkeys, wallpaper, system tray)
+  - `PySide6`  UI framework
+  - `Pillow`  image processing
+  - `pywin32`  Win32 API (hotkeys, wallpaper, system tray)
+  
 
 
 ## Notes
