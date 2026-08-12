@@ -4,7 +4,6 @@ A fast, keyboard-first Windows wallpaper switcher inspired by the interaction mo
 
 Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. Fuzzy search, grid/list view, live preview, and smooth transitions. Sits silently in the system tray and starts automatically at boot.
 
----
 
 ## Install
 
@@ -23,7 +22,6 @@ Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. F
 
 That's it. wault will launch in your system tray and register itself to auto-start on boot.
 
----
 
 ## Configuration
 
@@ -39,7 +37,6 @@ A `config.json` is auto-created on first run. You can edit it to change the hotk
 
 If the hotkey conflicts with another app, modify it by chnaging the `hotkey_key`.
 
----
 
 ## Features
 
@@ -48,7 +45,6 @@ If the hotkey conflicts with another app, modify it by chnaging the `hotkey_key`
 **Keyboard UX** - type to filter, `↑/↓` to move, `Enter` to apply, `Esc` to close.
 **Clean tray controls** - open, reload, change folder, quit.
 
----
 
 ## Requirements
 
@@ -59,7 +55,6 @@ If the hotkey conflicts with another app, modify it by chnaging the `hotkey_key`
   - `Pillow` — image processing
   - `pywin32` — Win32 API (hotkeys, wallpaper, system tray)
 
----
 
 ## Notes
 
