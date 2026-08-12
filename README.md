@@ -1,6 +1,6 @@
 # wault
 
-A fast, keyboard-first Windows wallpaper switcher — inspired by Raycast.
+A fast, keyboard-first Windows wallpaper switcher inspired by the interaction model of Raycast.
 
 Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. Fuzzy search, grid/list view, live preview, and smooth transitions. Sits silently in the system tray and starts automatically at boot.
 
@@ -21,22 +21,7 @@ Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. F
    install.bat
    ```
 
-That's it. wallv will launch in your system tray and register itself to auto-start on boot.
-
----
-
-## Usage
-
-| Action | How |
-|---|---|
-| Open picker | `Alt+W` |
-| Search wallpapers | Just start typing |
-| Navigate | `↑` / `↓` arrow keys |
-| Apply wallpaper | `Enter` |
-| Switch to Grid / List view | Click the toggle button |
-| Close picker | `Esc` |
-| Change wallpaper folder | Right-click tray icon → *Change Folder* |
-| Quit | Right-click tray icon → *Quit wallv* |
+That's it. wault will launch in your system tray and register itself to auto-start on boot.
 
 ---
 
@@ -52,21 +37,16 @@ A `config.json` is auto-created on first run. You can edit it to change the hotk
 }
 ```
 
-If the hotkey conflicts with another app, change `hotkey_key` to something else (e.g. `"space"`, `"f9"`) and restart wallv.
+If the hotkey conflicts with another app, modify it by chnaging the `hotkey_key`.
 
 ---
 
 ## Features
 
-- **Raycast-style UI** — compact floating launcher, dark glass design
-- **Fuzzy search** — instantly filters your wallpaper library
-- **Grid & List views** — toggle between views with a button
-- **Live preview pane** — see the wallpaper before applying
-- **Smooth crossfade transition** — animated wallpaper change
-- **Global hotkey** — works while any app is focused
-- **System tray daemon** — always running, zero taskbar clutter
-- **Auto-start at boot** — registered to Windows Startup on first launch
-- **High-DPI aware** — crisp rendering on all display scales
+**Raycast inspired UI** - clean & compact centered launcher, instant search, keyboard-first selection, preview pane.
+**Global hotkey** - `Alt+W` (or whatever is in `config.json`) works only on the desktop with no other apps focused.
+**Keyboard UX** - type to filter, `↑/↓` to move, `Enter` to apply, `Esc` to close.
+**Clean tray controls** - open, reload, change folder, quit.
 
 ---
 
@@ -83,6 +63,4 @@ If the hotkey conflicts with another app, change `hotkey_key` to something else 
 
 ## Notes
 
-- This is a **Windows-only** app. The hotkey and wallpaper APIs use Win32.
-- wallv will not run if another instance is already open (single-instance lock).
-- To uninstall: quit from the tray, delete the folder, and remove `wallv.lnk` from `shell:startup`.
+This is Windows specific. The global hotkey and desktop transition use Win32 APIs, so those parts are intentionally Windows-specific.
