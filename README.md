@@ -1,10 +1,9 @@
 # wault
 
-A fast, keyboard-first Windows wallpaper switcher — inspired by Raycast.
+A fast, keyboard-first Windows wallpaper switcher inspired by the interaction model of Raycast.
 
 Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. Fuzzy search, grid/list view, live preview, and smooth transitions. Sits silently in the system tray and starts automatically at boot.
 
----
 
 ## Install
 
@@ -54,21 +53,14 @@ A `config.json` is auto-created on first run. You can edit it to change the hotk
 
 If the hotkey conflicts with another app, change `hotkey_key` to something else (e.g. `"space"`, `"f9"`) and restart wault.
 
----
 
 ## Features
 
-- **Raycast-style UI** — compact floating launcher, dark glass design
-- **Fuzzy search** — instantly filters your wallpaper library
-- **Grid & List views** — toggle between views with a button
-- **Live preview pane** — see the wallpaper before applying
-- **Smooth crossfade transition** — animated wallpaper change
-- **Global hotkey** — works while any app is focused
-- **System tray daemon** — always running, zero taskbar clutter
-- **Auto-start at boot** — registered to Windows Startup on first launch
-- **High-DPI aware** — crisp rendering on all display scales
+**Raycast inspired UI** - clean & compact centered launcher, instant search, keyboard-first selection, preview pane.
+**Global hotkey** - `Alt+W` (or whatever is in `config.json`) works only on the desktop with no other apps focused.
+**Keyboard UX** - type to filter, `↑/↓` to move, `Enter` to apply, `Esc` to close.
+**Clean tray controls** - open, reload, change folder, quit.
 
----
 
 ## Requirements
 
@@ -79,7 +71,6 @@ If the hotkey conflicts with another app, change `hotkey_key` to something else 
   - `Pillow` — image processing
   - `pywin32` — Win32 API (hotkeys, wallpaper, system tray)
 
----
 
 ## Notes
 
