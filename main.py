@@ -65,7 +65,7 @@ class WallvApplication(QObject):
                     shortcut.Targetpath = pythonw_path
                     shortcut.Arguments = f'"{main_py_path}"'
                     shortcut.WorkingDirectory = base_dir
-                    shortcut.Description = "Starts wallv wallpaper switcher on login"
+                    shortcut.Description = "Starts wault wallpaper switcher on login"
                     shortcut.save()
                     print("[wallv] Startup shortcut verified successfully.")
                 finally:
@@ -78,11 +78,11 @@ class WallvApplication(QObject):
     def setup_tray(self):
         self.tray = QSystemTrayIcon(self)
         self.tray.setIcon(QIcon(create_tray_icon_pixmap()))
-        self.tray.setToolTip(f"wallv · {self.config.get_hotkey_string()}")
+        self.tray.setToolTip(f"wault · {self.config.get_hotkey_string()}")
 
         menu = QMenu()
 
-        show = menu.addAction(f"Open wallv  ·  {self.config.get_hotkey_string()}")
+        show = menu.addAction(f"Open wault  ·  {self.config.get_hotkey_string()}")
         show.triggered.connect(self.show_selector)
 
         reload_action = menu.addAction("Reload wallpapers")
@@ -92,7 +92,7 @@ class WallvApplication(QObject):
         folder.triggered.connect(self.selector.select_folder)
 
         menu.addSeparator()
-        quit_action = menu.addAction("Quit wallv")
+        quit_action = menu.addAction("Quit wault")
         quit_action.triggered.connect(self.quit_app)
 
         self.tray.setContextMenu(menu)
@@ -106,7 +106,7 @@ class WallvApplication(QObject):
 
         if not self.hotkey_listener._registered:
             self.tray.showMessage(
-                "wallv hotkey unavailable",
+                "wault hotkey unavailable",
                 f"{self.config.get_hotkey_string()} is already in use by Windows or another app.",
                 QSystemTrayIcon.MessageIcon.Warning,
                 5000,

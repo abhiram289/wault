@@ -598,7 +598,7 @@ class SelectorWindow(QWidget):
         root.addLayout(body, 1)
 
         footer = QHBoxLayout()
-        self.status_label = QLabel("wallv")
+        self.status_label = QLabel("wault")
         self.status_label.setObjectName("Muted")
         footer.addWidget(self.status_label)
         footer.addStretch()

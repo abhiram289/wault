@@ -3,7 +3,7 @@ setlocal
 
 echo.
 echo  ==========================================
-echo   wallv - Raycast-style Wallpaper Switcher
+echo   wault - a keyboard first wallpaper switcher
 echo  ==========================================
 echo.
 
@@ -34,11 +34,11 @@ if errorlevel 1 (
 )
 
 :: Launch once so it registers itself to startup
-echo  [3/3] Launching wallv and registering startup shortcut...
+echo  [3/3] Launching wault and registering startup shortcut...
 start "" .venv\Scripts\pythonw.exe main.py
 
 echo.
-echo  Done! wallv is now running in your system tray.
+echo  Done! wault is now running in your system tray.
 echo  Press Alt+W anywhere to open the wallpaper picker.
 echo  It will auto-start the next time you boot your PC.
 echo.

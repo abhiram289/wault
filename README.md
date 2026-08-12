@@ -21,7 +21,7 @@ Press **Alt+W** from anywhere to instantly open a searchable wallpaper picker. F
    install.bat
    ```
 
-That's it. wallv will launch in your system tray and register itself to auto-start on boot.
+That's it. wault will launch in your system tray and register itself to auto-start on boot.
 
 ---
 
@@ -36,7 +36,7 @@ That's it. wallv will launch in your system tray and register itself to auto-sta
 | Switch to Grid / List view | Click the toggle button |
 | Close picker | `Esc` |
 | Change wallpaper folder | Right-click tray icon → *Change Folder* |
-| Quit | Right-click tray icon → *Quit wallv* |
+| Quit | Right-click tray icon → *Quit wault* |
 
 ---
 
@@ -52,7 +52,7 @@ A `config.json` is auto-created on first run. You can edit it to change the hotk
 }
 ```
 
-If the hotkey conflicts with another app, change `hotkey_key` to something else (e.g. `"space"`, `"f9"`) and restart wallv.
+If the hotkey conflicts with another app, change `hotkey_key` to something else (e.g. `"space"`, `"f9"`) and restart wault.
 
 ---
 
@@ -84,5 +84,5 @@ If the hotkey conflicts with another app, change `hotkey_key` to something else 
 ## Notes
 
 - This is a **Windows-only** app. The hotkey and wallpaper APIs use Win32.
-- wallv will not run if another instance is already open (single-instance lock).
-- To uninstall: quit from the tray, delete the folder, and remove `wallv.lnk` from `shell:startup`.
+- wault will not run if another instance is already open (single-instance lock).
+- To uninstall: quit from the tray, delete the folder, and remove `wault.lnk` from `shell:startup`.
