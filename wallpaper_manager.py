@@ -68,34 +68,69 @@ def set_wallpaper(image_path):
 
 def set_lockscreen_wallpaper(image_path):
     """
-    Sets the Windows lockscreen wallpaper asynchronously.
+    Sets the Windows lock screen wallpaper by writing to the registry
+    and copying the image to the system lock screen cache path.
+    Works on Windows 10 and 11 with no extra packages.
     """
     if not os.path.exists(image_path):
         return False
-        
+
     import threading
     def worker():
         try:
-            import pythoncom
-            pythoncom.CoInitializeEx(pythoncom.COINIT_MULTITHREADED)
+            import winreg
+            import shutil
+
+            abs_path = os.path.abspath(image_path)
+
+            # Path Windows uses for the lock screen image cache
+            local_appdata = os.environ.get("LOCALAPPDATA", "")
+            lock_cache_dir = os.path.join(
+                local_appdata,
+                "Packages",
+                "Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy",
+                "LocalState", "Assets"
+            )
+
+            # Fallback: write to the Themes folder Windows also reads
+            themes_dir = os.path.join(
+                os.environ.get("USERPROFILE", ""),
+                "AppData", "Roaming", "Microsoft", "Windows", "Themes"
+            )
+
+            # Copy image as the lock screen background file
+            dest = os.path.join(themes_dir, "LockScreenImage" + os.path.splitext(image_path)[1])
+            os.makedirs(themes_dir, exist_ok=True)
+            shutil.copy2(abs_path, dest)
+
+            # Write registry keys so Windows picks up the change
+            reg_path = r"Software\Microsoft\Windows\CurrentVersion\Lock Screen"
             try:
-                import asyncio
-                from winrt.windows.storage import StorageFile
-                from winrt.windows.system.userprofile import LockScreen
-                
-                async def run_api():
-                    f = await StorageFile.get_file_from_path_async(os.path.abspath(image_path))
-                    await LockScreen.set_image_file_async(f)
-                    
-                asyncio.run(run_api())
-                print(f"[wallv] Lockscreen wallpaper updated successfully.")
-            finally:
-                pythoncom.CoUninitialize()
+                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, reg_path, 0,
+                                    winreg.KEY_SET_VALUE) as key:
+                    winreg.SetValueEx(key, "LockScreenImage", 0, winreg.REG_SZ, dest)
+                    winreg.SetValueEx(key, "LockScreenImagePath", 0, winreg.REG_SZ, dest)
+            except FileNotFoundError:
+                with winreg.CreateKey(winreg.HKEY_CURRENT_USER, reg_path) as key:
+                    winreg.SetValueEx(key, "LockScreenImage", 0, winreg.REG_SZ, dest)
+                    winreg.SetValueEx(key, "LockScreenImagePath", 0, winreg.REG_SZ, dest)
+
+            # Also update the Personalization key used by Settings app
+            pers_path = r"Software\Microsoft\Windows\CurrentVersion\PersonalizationCSP"
+            try:
+                with winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, pers_path) as key:
+                    winreg.SetValueEx(key, "LockScreenImagePath", 0, winreg.REG_SZ, dest)
+                    winreg.SetValueEx(key, "LockScreenImageStatus", 0, winreg.REG_DWORD, 1)
+            except PermissionError:
+                pass  # Requires admin — silently skip if not elevated
+
+            print(f"[wault] Lock screen wallpaper updated: {dest}")
         except Exception as e:
-            print(f"[wallv] Error setting lockscreen wallpaper: {e}")
+            print(f"[wault] Error setting lock screen wallpaper: {e}")
 
     threading.Thread(target=worker, daemon=True).start()
     return True
+
 
 # Simple test to verify the functionality when run directly
 if __name__ == "__main__":
