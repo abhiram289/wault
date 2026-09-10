@@ -68,9 +68,8 @@ def set_wallpaper(image_path):
 
 def set_lockscreen_wallpaper(image_path):
     """
-    Sets the Windows lock screen wallpaper by writing to the registry
-    and copying the image to the system lock screen cache path.
-    Works on Windows 10 and 11 with no extra packages.
+    Sets the Windows lock screen wallpaper using the official Windows Runtime (WinRT)
+    UserProfile.LockScreen API called via Windows PowerShell without requiring any external dependencies.
     """
     if not os.path.exists(image_path):
         return False
@@ -78,53 +77,46 @@ def set_lockscreen_wallpaper(image_path):
     import threading
     def worker():
         try:
-            import winreg
-            import shutil
+            import subprocess
+            import base64
 
-            abs_path = os.path.abspath(image_path)
+            abs_path = os.path.abspath(image_path).replace("'", "''")
 
-            # Path Windows uses for the lock screen image cache
-            local_appdata = os.environ.get("LOCALAPPDATA", "")
-            lock_cache_dir = os.path.join(
-                local_appdata,
-                "Packages",
-                "Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy",
-                "LocalState", "Assets"
+            ps_script = f"""
+Add-Type -AssemblyName System.Runtime.WindowsRuntime
+$asTaskGeneric = [System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {{
+    $_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncOperation`1'
+}}
+$asTaskAction = [System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {{
+    $_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncAction'
+}}
+
+$null = [Windows.Storage.StorageFile, Windows.Storage, ContentType=WindowsRuntime]
+$null = [Windows.System.UserProfile.LockScreen, Windows.System.UserProfile, ContentType=WindowsRuntime]
+
+$op = [Windows.Storage.StorageFile]::GetFileFromPathAsync('{abs_path}')
+$netTask = $asTaskGeneric.MakeGenericMethod([Windows.Storage.StorageFile]).Invoke($null, @($op))
+$netTask.Wait()
+$file = $netTask.Result
+
+$action = [Windows.System.UserProfile.LockScreen]::SetImageFileAsync($file)
+$netActionTask = $asTaskAction.Invoke($null, @($action))
+$netActionTask.Wait()
+"""
+            encoded = base64.b64encode(ps_script.encode('utf-16le')).decode('ascii')
+            creation_flags = getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000)
+
+            res = subprocess.run(
+                ["powershell", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-EncodedCommand", encoded],
+                capture_output=True,
+                text=True,
+                creationflags=creation_flags
             )
 
-            # Fallback: write to the Themes folder Windows also reads
-            themes_dir = os.path.join(
-                os.environ.get("USERPROFILE", ""),
-                "AppData", "Roaming", "Microsoft", "Windows", "Themes"
-            )
-
-            # Copy image as the lock screen background file
-            dest = os.path.join(themes_dir, "LockScreenImage" + os.path.splitext(image_path)[1])
-            os.makedirs(themes_dir, exist_ok=True)
-            shutil.copy2(abs_path, dest)
-
-            # Write registry keys so Windows picks up the change
-            reg_path = r"Software\Microsoft\Windows\CurrentVersion\Lock Screen"
-            try:
-                with winreg.OpenKey(winreg.HKEY_CURRENT_USER, reg_path, 0,
-                                    winreg.KEY_SET_VALUE) as key:
-                    winreg.SetValueEx(key, "LockScreenImage", 0, winreg.REG_SZ, dest)
-                    winreg.SetValueEx(key, "LockScreenImagePath", 0, winreg.REG_SZ, dest)
-            except FileNotFoundError:
-                with winreg.CreateKey(winreg.HKEY_CURRENT_USER, reg_path) as key:
-                    winreg.SetValueEx(key, "LockScreenImage", 0, winreg.REG_SZ, dest)
-                    winreg.SetValueEx(key, "LockScreenImagePath", 0, winreg.REG_SZ, dest)
-
-            # Also update the Personalization key used by Settings app
-            pers_path = r"Software\Microsoft\Windows\CurrentVersion\PersonalizationCSP"
-            try:
-                with winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, pers_path) as key:
-                    winreg.SetValueEx(key, "LockScreenImagePath", 0, winreg.REG_SZ, dest)
-                    winreg.SetValueEx(key, "LockScreenImageStatus", 0, winreg.REG_DWORD, 1)
-            except PermissionError:
-                pass  # Requires admin — silently skip if not elevated
-
-            print(f"[wault] Lock screen wallpaper updated: {dest}")
+            if res.returncode == 0:
+                print(f"[wault] Lock screen wallpaper updated successfully: {abs_path}")
+            else:
+                print(f"[wault] Lock screen PowerShell error: {res.stderr.strip()}")
         except Exception as e:
             print(f"[wault] Error setting lock screen wallpaper: {e}")
 
